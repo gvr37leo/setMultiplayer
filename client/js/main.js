@@ -5,6 +5,7 @@ socket.emit('update');
 
 var app = angular.module('app', []);
 
+//color coded labels in header for selection
 app.controller('ctrl',function($scope){
     $scope.deck = [];
     $scope.select = function(index){

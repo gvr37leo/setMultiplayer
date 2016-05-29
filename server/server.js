@@ -40,17 +40,17 @@ io.on("connection",function(socket){
     socket.emit('handshake',sessionId);
 
     socket.on("select", function (data) {
-        var card = deck[data.selected];
+        var card = deck[rangeCap(data.selected,0,9)];
         var player = players[sessionId];
-        if(card.selected[sessionId]){//
-            player.selectedSize--;//--
-            card.selected[sessionId] = !card.selected[sessionId];//
+        if(card.selected[sessionId]){
+            player.selectedSize--;
+            card.selected[sessionId] = !card.selected[sessionId];
         }else{
-            card.selected[sessionId] = !card.selected[sessionId];//
-            player.selected[player.selectedSize] = data.selected;//--
-            player.selectedSize++;//
+            card.selected[sessionId] = !card.selected[sessionId];
+            player.selected[player.selectedSize] = data.selected;
+            player.selectedSize++;
 
-            if(players[sessionId].selectedSize == 3){//
+            if(players[sessionId].selectedSize == 3){
                 if(Card.isSet(deck[player.selected[0]], deck[player.selected[1]], deck[player.selected[2]])){
                     deck[player.selected[0]] = deck[graveyardPointer];
                     deck[player.selected[1]] = deck[graveyardPointer - 1];
@@ -63,6 +63,7 @@ io.on("connection",function(socket){
                 deck[player.selected[1]].selected[sessionId] = false;
                 deck[player.selected[2]].selected[sessionId] = false;
                 player.selected = [0,0,0];
+                //deselect for all players
                 player.selectedSize = 0;
             }
         }
@@ -77,7 +78,7 @@ io.on("connection",function(socket){
     socket.on("disconnect", function () {
         console.log("client disconnected:" + socket.handshake.address);
         console.log("with sessionID: " + sessionId);
-        deleteSelection();
+        deleteSelection(sessionId);
         delete players[sessionId];
     });
 });
@@ -93,3 +94,9 @@ function deleteSelection(sessionId){
         delete card.selected[sessionId];
     })
 }
+
+var rangeCap = function(val,low,high){
+    if(val < low)return low;
+    if(val > high)return high;
+    return val;
+};

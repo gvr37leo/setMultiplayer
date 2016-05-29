@@ -2,7 +2,7 @@
 <html lang="en" ng-app="app">
     <head>
         <meta charset="UTF-8">
-        <title>Title</title>
+        <title>set</title>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/custom.css">
         <link rel="shortcut icon" type="image/png" href="resources/set.png">
@@ -15,10 +15,10 @@
     <body ng-controller="ctrl">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xs-4" ng-repeat="card in deck">
-                    <div class="panel" ng-class="{'panel-primary': card.selected[id],'panel-default': !card.selected[id]}">
+                <div ng-click="select($index)" class="col-xs-4" ng-repeat="card in deck">
+                    <div class="panel" ng-class="{'panel-primary': card.selected[id],'panel-default': !card.selected[id]}" style="cursor:pointer">
                         <div class="panel-heading">
-                            heading
+
                         </div>
                         <div class="panel-body">
                             <ul class="list-group">
@@ -26,7 +26,6 @@
                                 <li class="list-group-item">{{card.shape}}</li>
                                 <li class="list-group-item">{{card.quantity}}</li>
                             </ul>
-                            <button type="button" class="btn btn-primary btn-block" ng-click="select($index)">select</button>
                         </div>
                     </div>
                 </div>
