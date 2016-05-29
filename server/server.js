@@ -6,7 +6,7 @@ var server = require("http").createServer(app);
 var port = process.env.PORT || 8000;
 var io = require("socket.io")(server);
 var connectionCounter = 0;
-app.use(express.static('../client'));
+app.use(express.static('client'));
 server.listen(port, function(){
     console.log("listening on port " + port);
 });
