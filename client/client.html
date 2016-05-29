@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/custom.css">
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+        <script src="js/main.js"></script>
+    </head>
+    <body ng-controller="ctrl">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-4" ng-repeat="card in deck">
+                    <div class="panel" ng-class="{'panel-primary': card.selected[id],'panel-default': !card.selected[id]}">
+                        <div class="panel-heading">
+                            heading
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">{{card.color}}</li>
+                                <li class="list-group-item">{{card.shape}}</li>
+                                <li class="list-group-item">{{card.quantity}}</li>
+                            </ul>
+                            <button type="button" class="btn btn-primary btn-block" ng-click="select($index)">select</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
