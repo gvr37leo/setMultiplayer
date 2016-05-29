@@ -1,12 +1,15 @@
-var Card = require('./Card');
-var Player = require('./Player');
 var express = require("express");
 var app = express();
 var server = require("http").createServer(app);
 var port = process.env.PORT || 8000;
 var io = require("socket.io")(server);
-var connectionCounter = 0;
+
+var Card = require('./Card');
+var Player = require('./Player');
+
 app.use(express.static('client'));
+
+var connectionCounter = 0;
 server.listen(port, function(){
     console.log("listening on port " + port);
 });
