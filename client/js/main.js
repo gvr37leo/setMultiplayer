@@ -1,6 +1,6 @@
 var socket;
 if(window.location.href == 'http://localhost:8000/')socket = io.connect("localhost:8000");
-else socket = io.connect("https://treesnake.herokuapp.com/");
+else socket = io.connect("https://multiset.herokuapp.com/");
 socket.emit('update');
 
 var app = angular.module('app', []);
