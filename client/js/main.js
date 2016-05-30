@@ -10,6 +10,7 @@ var app = angular.module('app', []);
 //color coded labels in header for selection
 app.controller('ctrl',function($scope){
     $scope.deck = [];
+    $scope.labelColors = ["default","success","info","warning","danger"];
     $scope.select = function(index){
         socket.emit('select',{
             selected:index

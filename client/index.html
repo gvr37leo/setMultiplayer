@@ -20,7 +20,8 @@
                         <div ng-click="select($index)" class="col-xs-4" ng-repeat="card in deck" >
                             <div  class="panel" ng-class="{'panel-primary': card.selected[id],'panel-default': !card.selected[id]}" style="cursor:pointer;height: 200px">
                                 <div class="panel-heading">
-                                    <div ng-repeat="(id, val) in card.selected">{{id}}:{{val}}</div>
+                                    &#8204;
+                                    <span ng-repeat="(playerId, val) in card.selected" ng-if="val" class="label label-{{labelColors[playerId % labelColors.length]}}">&#8204;</span>
                                 </div>
                                 <div class="panel-body">
                                     <ul class="list-group">
@@ -36,9 +37,16 @@
                         <div class="panel-heading">
                             Score card
                         </div>
-                        <ul class="list-group" ng-repeat="(id, player) in players">
-                            <li class="list-group-item">player {{id}}:{{player.score}}</li>
-                        </ul>
+                        <table class="table table-striped">
+                            <tr>
+                                <th>player</th>
+                                <th>score</th>
+                            </tr>
+                            <tr ng-repeat="(playerId, player) in players" ng-class="{'info':id == playerId}">
+                                <td><span class="label label-{{labelColors[playerId % labelColors.length]}}">&#8204;</span></td>
+                                <td>{{player.score}}</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
