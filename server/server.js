@@ -18,8 +18,9 @@ var players = {};
 
 var deck = Card.generateCards();
 var graveyardPointer = deck.length - 1;
-//Card.shuffle(deck);
-//var handSize = 9;
+Card.shuffle(deck);
+var handSize = 9;
+console.log(Card.findSets(deck.slice(0,cap(handSize,graveyardPointer + 1))));//.forEach(function(item){console.log(item)});
 //var selected = [0,0,0];
 //var selectedSize = 0;
 
@@ -56,8 +57,16 @@ io.on("connection",function(socket){
                     deck[player.selected[1]] = deck[graveyardPointer - 1];
                     deck[player.selected[2]] = deck[graveyardPointer - 2];
                     graveyardPointer -= 3;
-
                     player.score++;
+
+                    var sets = Card.findSets(deck.slice(0,cap(handSize,graveyardPointer + 1)));
+                    if(sets.length == 0){
+                        deck = Card.generateCards();
+                        Card.shuffle(deck);
+                        graveyardPointer = deck.length - 1;
+                        sets = Card.findSets(deck.slice(0,cap(handSize,graveyardPointer + 1)));
+                    }
+                    console.log(sets);
                 }
                 deck[player.selected[0]].selected[sessionId] = false;
                 deck[player.selected[1]].selected[sessionId] = false;
@@ -93,6 +102,11 @@ function deleteSelection(sessionId){
     deck.forEach(function(card){
         delete card.selected[sessionId];
     })
+}
+
+function cap(val, cap){
+    if(val > cap) return cap;
+    return val;
 }
 
 var rangeCap = function(val,low,high){

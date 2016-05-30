@@ -3,6 +3,8 @@ if(window.location.href == 'http://localhost:8000/')socket = io.connect("localho
 else socket = io.connect("https://setmulti.herokuapp.com/");
 socket.emit('update');
 
+
+
 var app = angular.module('app', []);
 
 //color coded labels in header for selection
@@ -12,6 +14,9 @@ app.controller('ctrl',function($scope){
         socket.emit('select',{
             selected:index
         });
+    };
+    $scope.getNumber = function(num) {
+        return new Array(num);
     };
 
 
@@ -24,6 +29,9 @@ app.controller('ctrl',function($scope){
         $scope.deck = data.deck.splice(0, cap(9,data.graveyardPointer + 1));
         $scope.$apply();
     });
+
+    //var canvas = document.getElementById("zero");
+    //var ctx = canvas.getContext("2d");
 });
 
 function cap(val, cap){

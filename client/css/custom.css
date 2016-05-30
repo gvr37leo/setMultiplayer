@@ -5,3 +5,43 @@
 body{
     margin-bottom: 300px;
 }
+
+li{
+    height: 41px;
+}
+
+.red{
+    background-color: red;
+    border-color: black;
+    color: white;
+}
+
+.green{
+    background-color: green;
+    border-color: black;
+    color: white;
+}
+
+.blue{
+    background-color: #4444ff;
+    border-color: black;
+    color: white;
+}
+
+.large{
+    width: 100%;
+    margin-left: auto ;
+    margin-right: auto ;
+}
+
+.medium{
+    width: 50%;
+    margin-left: auto ;
+    margin-right: auto ;
+}
+
+.small{
+    width: 10%;
+    margin-left: auto ;
+    margin-right: auto ;
+}
