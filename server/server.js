@@ -89,6 +89,11 @@ io.on("connection",function(socket){
         console.log("with sessionID: " + sessionId);
         deleteSelection(sessionId);
         delete players[sessionId];
+        io.sockets.emit("update",{
+            deck:deck,
+            players:players,
+            graveyardPointer:graveyardPointer
+        });
     });
 });
 

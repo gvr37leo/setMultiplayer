@@ -27,6 +27,7 @@ app.controller('ctrl',function($scope){
     socket.on('update', function (data) {
         console.log(data);
         $scope.deck = data.deck.splice(0, cap(9,data.graveyardPointer + 1));
+        $scope.players = data.players;
         $scope.$apply();
     });
 

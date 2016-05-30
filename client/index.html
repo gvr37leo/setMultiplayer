@@ -15,22 +15,34 @@
     <body ng-controller="ctrl">
         <div class="container-fluid">
             <div class="row">
-                <div ng-click="select($index)" class="col-xs-4" ng-repeat="card in deck" >
-                    <div  class="panel" ng-class="{'panel-primary': card.selected[id],'panel-default': !card.selected[id]}" style="cursor:pointer;height: 200px">
-                        <div class="panel-heading">
-                        </div>
-                        <div class="panel-body">
-
-                          <ul class="list-group">
-                              <li class="list-group-item" ng-class="{'red':card.color == 0, 'green':card.color == 1, 'blue':card.color == 2, 'small':card.shape == 0, 'medium':card.shape == 1, 'large':card.shape == 2}" ng-repeat="i in getNumber(card.quantity + 1) track by $index"></li>
-                          </ul>
+                <div class="col-xs-10">
+                    <div class="row">
+                        <div ng-click="select($index)" class="col-xs-4" ng-repeat="card in deck" >
+                            <div  class="panel" ng-class="{'panel-primary': card.selected[id],'panel-default': !card.selected[id]}" style="cursor:pointer;height: 200px">
+                                <div class="panel-heading">
+                                    <div ng-repeat="(id, val) in card.selected">{{id}}:{{val}}</div>
+                                </div>
+                                <div class="panel-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item" ng-class="{'red':card.color == 0, 'green':card.color == 1, 'blue':card.color == 2, 'small':card.shape == 0, 'medium':card.shape == 1, 'large':card.shape == 2}" ng-repeat="i in getNumber(card.quantity + 1) track by $index"></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-xs-2">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            Score card
+                        </div>
+                        <ul class="list-group" ng-repeat="(id, player) in players">
+                            <li class="list-group-item">player {{id}}:{{player.score}}</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
-        <canvas id="zero" style="width: 100%">
 
-        </canvas>
+        </div>
     </body>
 </html>
