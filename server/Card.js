@@ -1,22 +1,17 @@
 var Vector = require('./Vector');
 
-function Card(color,shape,quantity){
+function Card(attributes){
     this.position = new Vector(10,10);
-
-    this.shape  = 0;
-    this.color = color;
-    this.shape = shape;
-    this.quantity = quantity;
-
+    //a[0] = color,a[1] = shape, a[2] = quantity, a[3] = ?
+    this.attributes = attributes;
 
     this.selected = {};
 }
 
 Card.isSet = function(a, b, c){
-    var propertys = ["color","shape","quantity"];
-    for(var i = 0; i < propertys.length; i++){
-        if(!((a[propertys[i]] == b[propertys[i]] && a[propertys[i]] == c[propertys[i]]) ||
-        (a[propertys[i]] != b[propertys[i]] && a[propertys[i]] != c[propertys[i]] && b[propertys[i]] != c[propertys[i]]))){
+    for(var i = 0; i < 3; i++){
+        if(!((a.attributes[i] == b.attributes[i] && a.attributes[i] == c.attributes[i]) ||
+        (a.attributes[i] != b.attributes[i] && a.attributes[i] != c.attributes[i] && b.attributes[i] != c.attributes[i]))){
             return false;
         }
     }
@@ -39,12 +34,13 @@ Card.findSets = function(hand){
 
 Card.generateCards = function(){
     var cards = [];
-    for(var color = 0; color < 3; color++){
-        for(var shape = 0; shape < 3; shape++){
-            for(var quantity = 0; quantity < 3; quantity++){
-                cards.push(new Card(color,shape,quantity));
-            }
-        }
+    var attributesCount = 3;
+    var setSize = 3;
+
+    for(var i = 0; i < Math.pow(attributesCount ,setSize); i++){
+        var attributes = convertBase(i,10,attributesCount);
+        for(var j = 0; j < setSize; j++)if(attributes[j] == undefined)attributes.unshift(0);
+        cards.push(new Card(attributes));
     }
     return cards;
 };
@@ -61,6 +57,36 @@ function swap(array, a ,b){
     var temp = array[a];
     array[a] = array[b];
     array[b] = temp;
+}
+
+function convertBase(n, from, to){
+    return toDigits(fromDigits(splitInt(n), from), to)
+}
+
+function splitInt(n){
+    var digits = [];
+    while(n > 0){
+        digits.unshift(n % 10);
+        n = Math.floor(n / 10);
+    }
+    return digits;
+}
+
+function toDigits(n,base){
+    var digits = [];
+    while(n > 0){
+        digits.unshift(n % base);
+        n = Math.floor(n / base);
+    }
+    return digits;
+}
+
+function fromDigits(digits,b){
+    var n = 0;
+    digits.forEach(function(digit){
+        n = b * n + digit;
+    });
+    return n;
 }
 
 module.exports = Card;
