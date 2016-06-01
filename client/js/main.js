@@ -9,7 +9,7 @@ var app = angular.module('app', []);
 
 //color coded labels in header for selection
 app.controller('ctrl',function($scope){
-    $scope.deck = [];
+    $scope.hand = [];
     $scope.labelColors = ["default","success","info","warning","danger"];
     $scope.select = function(index){
         socket.emit('select',{
@@ -27,17 +27,14 @@ app.controller('ctrl',function($scope){
 
     socket.on('update', function (data) {
         console.log(data);
-        $scope.deck = data.deck.splice(0, cap(9,data.graveyardPointer + 1));
+        $scope.hand = data.hand;
         $scope.players = data.players;
         $scope.$apply();
-        console.log(findSets($scope.deck).toString());
+        console.log(findSets($scope.hand).toString());
     });
 });
 
-function cap(val, cap){
-    if(val > cap) return cap;
-    return val;
-}
+
 
 function findSets(hand){
     var sets = [];
