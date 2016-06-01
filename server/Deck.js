@@ -97,16 +97,4 @@ function cap(val, cap){
     return val;
 }
 
-Deck.prototype.setAllCardsToUnselected = function(sessionId){
-    this.cards.forEach(function(card){
-        card.selected[sessionId] = false;
-    })
-};
-
-Deck.prototype.deleteSelection = function(sessionId){
-    this.cards.forEach(function(card){
-        delete card.selected[sessionId];
-    })
-};
-
 module.exports = Deck;

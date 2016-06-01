@@ -50,26 +50,27 @@ io.on("connection",function(socket){
     console.log("with sessionID: " + sessionId);
     players[sessionId] = new Player();
     connectionCounter++;
-    deck.setAllCardsToUnselected(sessionId);
     emitUpdate();
     socket.emit('handshake',sessionId);
 
     socket.on("select", function (data) {//data{selected:int[0-9]}
-        var card = deck.cards[rangeCap(data.selected,0,deck.handSize)];
+        data.selected = rangeCap(data.selected,0,deck.handSize);
         var player = players[sessionId];
-        if(card.selected[sessionId]){
+
+        if(player.selected[data.selected]){
             player.selectedSize--;
-            card.selected[sessionId] = !card.selected[sessionId];
+            player.selected[data.selected] = !player.selected[data.selected];
+            player.handPointers[player.selectedSize] = data.selected;
         }else{
-            card.selected[sessionId] = !card.selected[sessionId];
-            player.selected[player.selectedSize] = data.selected;
+            player.selected[data.selected] = !player.selected[data.selected];
+            player.handPointers[player.selectedSize] = data.selected;
             player.selectedSize++;
 
-            if(players[sessionId].selectedSize == 3){
-                if(Deck.isSet(deck.cards[player.selected[0]], deck.cards[player.selected[1]], deck.cards[player.selected[2]])){
-                    deck.cards[player.selected[0]] = deck.cards[deck.graveyardPointer];
-                    deck.cards[player.selected[1]] = deck.cards[deck.graveyardPointer - 1];
-                    deck.cards[player.selected[2]] = deck.cards[deck.graveyardPointer - 2];
+            if(player.selectedSize == 3){
+                if(Deck.isSet(deck.cards[player.handPointers[0]], deck.cards[player.handPointers[1]], deck.cards[player.handPointers[2]])){
+                    deck.cards[player.handPointers[0]] = deck.cards[deck.graveyardPointer];
+                    deck.cards[player.handPointers[1]] = deck.cards[deck.graveyardPointer - 1];
+                    deck.cards[player.handPointers[2]] = deck.cards[deck.graveyardPointer - 2];
                     deck.graveyardPointer -= 3;
                     player.score++;
 
@@ -83,10 +84,8 @@ io.on("connection",function(socket){
                     timeSinceLastSetFound = 0;
                     console.log(sets);
                 }
-                deck.cards[player.selected[0]].selected[sessionId] = false;
-                deck.cards[player.selected[1]].selected[sessionId] = false;
-                deck.cards[player.selected[2]].selected[sessionId] = false;
-                player.selected = [0,0,0];
+                player.selected = [false,false,false,false,false,false,false,false,false];
+                player.handPointers = [0,0,0];
                 //deselect for all players
                 player.selectedSize = 0;
 
@@ -98,7 +97,6 @@ io.on("connection",function(socket){
     socket.on("disconnect", function () {
         console.log("client disconnected:" + socket.handshake.address);
         console.log("with sessionID: " + sessionId);
-        deck.deleteSelection(sessionId);
         delete players[sessionId];
         emitUpdate();
     });
@@ -112,11 +110,6 @@ function emitUpdate(){
     });
 }
 
-//function cap(val, cap){
-//    if(val > cap) return cap;
-//    return val;
-//}
-//
 var rangeCap = function(val,low,high){
     if(val < low)return low;
     if(val > high)return high;

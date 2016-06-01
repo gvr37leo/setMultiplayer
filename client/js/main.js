@@ -3,11 +3,8 @@ if(window.location.href == 'http://localhost:8000/')socket = io.connect("localho
 else socket = io.connect("https://setmulti.herokuapp.com/");
 socket.emit('update');
 
-
-
 var app = angular.module('app', []);
 
-//color coded labels in header for selection
 app.controller('ctrl',function($scope){
     $scope.hand = [];
     $scope.labelColors = ["default","success","info","warning","danger"];
@@ -29,6 +26,14 @@ app.controller('ctrl',function($scope){
         console.log(data);
         $scope.hand = data.hand;
         $scope.players = data.players;
+        for(var playerId in $scope.players){
+            var player  = $scope.players[playerId];
+            for(var i = 0; i < player.selectedSize; i++){
+                var handpointer = player.handPointers[i];
+                $scope.hand[handpointer].selected = {};
+                $scope.hand[handpointer].selected[playerId] = true;
+            }
+        }
         $scope.$apply();
         console.log(findSets($scope.hand).toString());
     });
