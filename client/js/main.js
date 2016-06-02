@@ -26,11 +26,14 @@ app.controller('ctrl',function($scope){
         console.log(data);
         $scope.hand = data.hand;
         $scope.players = data.players;
+        $scope.hand.forEach(function(card){
+            card.selected = {};
+        });
         for(var playerId in $scope.players){
             var player  = $scope.players[playerId];
             for(var i = 0; i < player.selectedSize; i++){
                 var handpointer = player.handPointers[i];
-                $scope.hand[handpointer].selected = {};
+
                 $scope.hand[handpointer].selected[playerId] = true;
             }
         }

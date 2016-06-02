@@ -58,9 +58,9 @@ io.on("connection",function(socket){
         var player = players[sessionId];
 
         if(player.selected[data.selected]){
-            player.selectedSize--;
+            player.selectedSize--;//problem is that by lowering the array only the earliest pointer remains
             player.selected[data.selected] = !player.selected[data.selected];
-            player.handPointers[player.selectedSize] = data.selected;
+            //player.handPointers[player.selectedSize] = data.selected;
         }else{
             player.selected[data.selected] = !player.selected[data.selected];
             player.handPointers[player.selectedSize] = data.selected;
@@ -68,9 +68,7 @@ io.on("connection",function(socket){
 
             if(player.selectedSize == 3){
                 if(Deck.isSet(deck.cards[player.handPointers[0]], deck.cards[player.handPointers[1]], deck.cards[player.handPointers[2]])){
-                    deck.cards[player.handPointers[0]] = deck.cards[deck.graveyardPointer];
-                    deck.cards[player.handPointers[1]] = deck.cards[deck.graveyardPointer - 1];
-                    deck.cards[player.handPointers[2]] = deck.cards[deck.graveyardPointer - 2];
+                    for(var i = 0; i < deck.handSize; i++)deck.cards[player.handPointers[i]] = deck.cards[deck.graveyardPointer - i];
                     deck.graveyardPointer -= 3;
                     player.score++;
 
@@ -86,7 +84,6 @@ io.on("connection",function(socket){
                 }
                 player.selected = [false,false,false,false,false,false,false,false,false];
                 player.handPointers = [0,0,0];
-                //deselect for all players
                 player.selectedSize = 0;
 
             }
