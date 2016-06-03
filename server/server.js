@@ -60,7 +60,13 @@ io.on("connection",function(socket){
         if(player.selected[data.selected]){
             player.selectedSize--;//problem is that by lowering the array only the earliest pointer remains
             player.selected[data.selected] = !player.selected[data.selected];
-            //player.handPointers[player.selectedSize] = data.selected;
+            var hits = 0;
+            for(var x = 0; x < player.selected.length && hits < player.selectedSize; x++){
+                if(player.selected[x]){
+                    player.handPointers[hits] = x;
+                    hits++;
+                }
+            }
         }else{
             player.selected[data.selected] = !player.selected[data.selected];
             player.handPointers[player.selectedSize] = data.selected;
